@@ -14,8 +14,7 @@ jobs:
   detect-changed-addons:
     if: >-
       ${{
-        github.repository_owner == 'alexbelgium' &&
-        (github.event_name != 'push' || !contains(github.event.head_commit.message, 'nobuild'))
+        github.event_name != 'push' || !contains(github.event.head_commit.message, 'nobuild')
       }}
     runs-on: ubuntu-latest
     outputs:
@@ -393,8 +392,7 @@ jobs:
       ${{
         failure() &&
         github.event_name == 'push' &&
-        github.ref == 'refs/heads/master' &&
-        github.repository_owner == 'alexbelgium'
+        github.ref == 'refs/heads/master'
       }}
     needs: [detect-changed-addons, prebuild-sanitize, lint_config, build]
     runs-on: ubuntu-latest
