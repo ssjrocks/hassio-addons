@@ -49,7 +49,7 @@ TZ: Europe/London
 
 ## Home Assistant Actions API
 
-When `HA_ACTIONS_ENABLED` is turned on and `HA_ACTIONS_TOKEN` is set, the add-on exposes a companion API at `/ha-actions/`. This is designed for Home Assistant automations, `rest_command`, or AI agents that need a simpler interface than Seerr's full API.
+When `HA_ACTIONS_ENABLED` is turned on and `HA_ACTIONS_TOKEN` is set, the add-on exposes a companion API on port `8099`. This is designed for Home Assistant automations, `rest_command`, or AI agents that need a simpler interface than Seerr's full API.
 
 All calls must include:
 
@@ -59,7 +59,7 @@ Authorization: Bearer <HA_ACTIONS_TOKEN>
 
 ### Search media
 
-`GET /ha-actions/search?query=inception&mediaType=movie`
+`GET http://homeassistant.local:8099/search?query=inception&mediaType=movie`
 
 Optional query parameters:
 - `mediaType`: `all`, `movie`, or `tv`
@@ -70,7 +70,7 @@ Example response returns simplified Seerr search results with `id`, `mediaType`,
 
 ### Submit a request
 
-`POST /ha-actions/request`
+`POST http://homeassistant.local:8099/request`
 
 ```json
 {
@@ -97,13 +97,13 @@ For TV requests, `seasons` can be an array like `[1,2]` or `"all"` if your Seerr
 ```yaml
 rest_command:
   seerr_search:
-    url: "http://homeassistant.local:5055/ha-actions/search?query={{ query | urlencode }}&mediaType={{ media_type | default('all') }}"
+    url: "http://homeassistant.local:8099/search?query={{ query | urlencode }}&mediaType={{ media_type | default('all') }}"
     method: GET
     headers:
       Authorization: "Bearer YOUR_TOKEN"
 
   seerr_request:
-    url: "http://homeassistant.local:5055/ha-actions/request"
+    url: "http://homeassistant.local:8099/request"
     method: POST
     headers:
       Authorization: "Bearer YOUR_TOKEN"

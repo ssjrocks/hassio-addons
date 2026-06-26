@@ -1,3 +1,6 @@
+## 3.3.0-2 (2026-06-26)
+- Exposed the Home Assistant actions helper on add-on port `8099` for direct agent access
+
 ## 3.3.0-1 (2026-06-26)
 - Added an optional `/ha-actions/` companion API for Home Assistant and AI agents
 - Added token-protected `search` and `request` endpoints backed by Seerr's native API

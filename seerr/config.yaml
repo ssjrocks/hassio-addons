@@ -85,8 +85,10 @@ panel_icon: mdi:movie-search
 panel_admin: false
 ports:
   5055/tcp: 5055
+  8099/tcp: 8099
 ports_description:
   5055/tcp: web interface
+  8099/tcp: Home Assistant actions API
 privileged: []
 schema:
   HA_ACTIONS_ENABLED: bool
@@ -102,4 +104,4 @@ schema:
 slug: seerr
 udev: true
 url: https://github.com/alexbelgium/hassio-addons/tree/master/seerr
-version: "3.3.0-1"
+version: "3.3.0-2"
