@@ -34,6 +34,7 @@ profile seerr_addon flags=(attach_disconnected,mediate_deleted) {
   /bin/** ix,
   /usr/bin/** ix,
   /usr/lib/bashio/** ix,
+  /etc/seerr-ha-actions/** r,
   /etc/s6/** rix,
   /run/s6/** rix,
   /etc/services.d/** rwix,

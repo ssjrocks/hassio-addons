@@ -1,3 +1,7 @@
+## 3.3.0-1 (2026-06-26)
+- Added an optional `/ha-actions/` companion API for Home Assistant and AI agents
+- Added token-protected `search` and `request` endpoints backed by Seerr's native API
+
 ## 3.3.0 (2026-06-05)
 - Update to latest version from seerr-team/seerr (changelog : https://github.com/seerr-team/seerr/releases)
 
@@ -35,4 +39,3 @@
 - Initial release based on the Overseerr add-on, updated to the Seerr upstream image and naming.
 - Switched base image to `seerr/seerr:latest` and updated metadata/options for the new slug.
 - Remove bundled binary image assets from the add-on directory as requested by review feedback.
-

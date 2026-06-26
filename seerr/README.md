@@ -26,6 +26,9 @@ Use `env_vars` to pass extra environment variables when needed. Seerr configurat
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `HA_ACTIONS_ENABLED` | bool | `false` | Enable a small companion API for Home Assistant and AI agents to search and submit requests through Seerr |
+| `HA_ACTIONS_TOKEN` | password | | Bearer token required by the companion API |
+| `HA_ACTIONS_USER_ID` | int | `1` | Seerr user ID that request actions should run as by default |
 | `NODE_MEMORY_LIMIT` | int | `512` | Maximum Node.js heap memory in MB. Increase if Seerr crashes with large libraries; decrease on memory-constrained systems. |
 | `PGID` | int | `0` | Group ID for file permissions |
 | `PUID` | int | `0` | User ID for file permissions |
@@ -34,11 +37,79 @@ Use `env_vars` to pass extra environment variables when needed. Seerr configurat
 ### Example
 
 ```yaml
+HA_ACTIONS_ENABLED: false
+HA_ACTIONS_TOKEN: ""
+HA_ACTIONS_USER_ID: 1
 NODE_MEMORY_LIMIT: 512
 env_vars: []
 PGID: 0
 PUID: 0
 TZ: Europe/London
+```
+
+## Home Assistant Actions API
+
+When `HA_ACTIONS_ENABLED` is turned on and `HA_ACTIONS_TOKEN` is set, the add-on exposes a companion API at `/ha-actions/`. This is designed for Home Assistant automations, `rest_command`, or AI agents that need a simpler interface than Seerr's full API.
+
+All calls must include:
+
+```text
+Authorization: Bearer <HA_ACTIONS_TOKEN>
+```
+
+### Search media
+
+`GET /ha-actions/search?query=inception&mediaType=movie`
+
+Optional query parameters:
+- `mediaType`: `all`, `movie`, or `tv`
+- `language`
+- `page`
+
+Example response returns simplified Seerr search results with `id`, `mediaType`, `title`, `releaseDate`, `overview`, and `mediaInfo`.
+
+### Submit a request
+
+`POST /ha-actions/request`
+
+```json
+{
+  "mediaType": "movie",
+  "mediaId": 27205
+}
+```
+
+Optional fields are passed through to Seerr when provided:
+- `userId`
+- `tvdbId`
+- `seasons`
+- `is4k`
+- `serverId`
+- `profileId`
+- `rootFolder`
+- `languageProfileId`
+- `ignoreQuota`
+
+For TV requests, `seasons` can be an array like `[1,2]` or `"all"` if your Seerr configuration allows it.
+
+### Example `rest_command`
+
+```yaml
+rest_command:
+  seerr_search:
+    url: "http://homeassistant.local:5055/ha-actions/search?query={{ query | urlencode }}&mediaType={{ media_type | default('all') }}"
+    method: GET
+    headers:
+      Authorization: "Bearer YOUR_TOKEN"
+
+  seerr_request:
+    url: "http://homeassistant.local:5055/ha-actions/request"
+    method: POST
+    headers:
+      Authorization: "Bearer YOUR_TOKEN"
+      Content-Type: "application/json"
+    payload: >
+      {{ {"mediaType": media_type, "mediaId": media_id} | tojson }}
 ```
 
 ## Migration
