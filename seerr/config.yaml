@@ -74,6 +74,9 @@ map:
   - addon_config:rw
 name: Seerr
 options:
+  HA_ACTIONS_ENABLED: false
+  HA_ACTIONS_TOKEN: ""
+  HA_ACTIONS_USER_ID: 1
   NODE_MEMORY_LIMIT: 512
   env_vars: []
   PGID: "0"
@@ -86,6 +89,9 @@ ports_description:
   5055/tcp: web interface
 privileged: []
 schema:
+  HA_ACTIONS_ENABLED: bool
+  HA_ACTIONS_TOKEN: password?
+  HA_ACTIONS_USER_ID: int
   env_vars:
     - name: match(^[A-Za-z0-9_]+$)
       value: str?
@@ -96,4 +102,4 @@ schema:
 slug: seerr
 udev: true
 url: https://github.com/alexbelgium/hassio-addons/tree/master/seerr
-version: "3.3.0"
+version: "3.3.0-1"
